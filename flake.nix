@@ -1,15 +1,37 @@
 {
-  description = "A very basic flake";
-
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nvf.url = "github:notashelf/nvf";
   };
 
-  outputs = { self, nixpkgs }: {
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  } @ inputs: {
+    packages."x86_64-linux" = let
+        neovimConfigured = (inputs.nvf.lib.neovimConfiguration {
+          inherit (nixpkgs.legacyPackages."x86_64-linux") pkgs;
+          modules = [{
+              config.vim = {
+                # Enable custom theming options
+                theme.enable = true;
 
-    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+                # Enable Treesitter
+                tree-sitter.enable = true;
 
-    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
-
+                # Other options will go here. Refer to the config
+                # reference in Appendix B of the nvf manual.
+                # ...
+              };
+          }];
+        });
+    in {
+      # Set the default package to the wrapped instance of Neovim.
+      # This will allow running your Neovim configuration with
+      # `nix run` and in addition, sharing your configuration with
+      # other users in case your repository is public.
+      default = neovimConfigured.neovim;
+    };
   };
 }
