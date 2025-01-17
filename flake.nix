@@ -12,19 +12,9 @@
     packages."x86_64-linux" = let
         neovimConfigured = (inputs.nvf.lib.neovimConfiguration {
           inherit (nixpkgs.legacyPackages."x86_64-linux") pkgs;
-          modules = [{
-              config.vim = {
-                # Enable custom theming options
-                theme.enable = true;
-
-                # Enable Treesitter
-                tree-sitter.enable = true;
-
-                # Other options will go here. Refer to the config
-                # reference in Appendix B of the nvf manual.
-                # ...
-              };
-          }];
+          modules = [
+            ./configuration.nix
+          ];
         });
     in {
       # Set the default package to the wrapped instance of Neovim.
