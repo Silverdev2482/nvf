@@ -1,7 +1,11 @@
 { nixpkgs, config, ... }:
 {
   config.vim = {
-    theme.enable = true;
+    theme = {
+      enable = true;
+      name = "gruvbox";
+      style = "dark";
+    };
     options = {
       expandtab = true;
       shiftwidth = 2;
