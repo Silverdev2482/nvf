@@ -1,6 +1,10 @@
-{ nixpkgs, config, ... }:
+{ nixpkgs, config, inputs, ... }:
+#let
+#  inherit (inputs.nvf.lib.dag) entryAfter;
+#in
 {
   config.vim = {
+#    luaConfigRC = entryAfter ["lspconfig"] "require('lspconfig').harper_ls.setup {}";
     theme = {
       enable = true;
       name = "gruvbox";
@@ -14,6 +18,10 @@
     };
     autocomplete.nvim-cmp = {
       enable = true;
+    };
+    notes.neorg = {
+      enable = true;
+      treesitter.enable = true;
     };
     treesitter.enable = true;
     languages = {
