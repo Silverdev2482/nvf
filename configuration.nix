@@ -1,10 +1,9 @@
-{ nixpkgs, config, inputs, ... }:
+{ nixpkgs, config, inputs, pkgs, ... }:
 #let
 #  inherit (inputs.nvf.lib.dag) entryAfter;
 #in
 {
   config.vim = {
-#    luaConfigRC = entryAfter ["lspconfig"] "require('lspconfig').harper_ls.setup {}";
     theme = {
       enable = true;
       name = "gruvbox";
@@ -28,6 +27,16 @@
       nix.enable = true;
       clang.enable = true;
       rust.enable = true;
+    };
+    lsp.lspconfig.enable = true;
+    extraPlugins = with pkgs; {
+      harper = {
+        package = harper;
+        setup = ''
+          require('lspconfig').harper_ls.setup {}
+        '';
+        after = [ "lspconfig" ];
+      };
     };
   };
 }

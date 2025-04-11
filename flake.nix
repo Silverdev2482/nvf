@@ -12,9 +12,15 @@
     packages."x86_64-linux" = let
         neovimConfigured = (inputs.nvf.lib.neovimConfiguration {
           inherit (nixpkgs.legacyPackages."x86_64-linux") pkgs;
+#          specialArgs = { inherit inputs; };
           modules = [
             ./configuration.nix
             ./keybinds.nix
+            {
+#              vim.luaConfigRC.harper = inputs.nvf.lib.nvim.dag.entryAfter [ "lspconfig" ] ''
+#                require('lspconfig').harper_ls.setup {}
+#              '';
+            }
           ];
         });
     in {
