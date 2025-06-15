@@ -28,7 +28,10 @@
       clang.enable = true;
       rust.enable = true;
     };
-    lsp.lspconfig.enable = true;
+    lsp = {
+      lspconfig.enable = true;
+      lspkind.enable = true;
+    };
     extraPlugins = with pkgs; {
       harper = {
         package = harper;
