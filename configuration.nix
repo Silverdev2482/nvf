@@ -20,7 +20,7 @@
     };
     notes.neorg = {
       enable = true;
-      treesitter.enable = true;
+#      treesitter.enable = true;
     };
     treesitter.enable = true;
     languages = {
